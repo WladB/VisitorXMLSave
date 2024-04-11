@@ -48,6 +48,7 @@ namespace Figures_pr
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.button12 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -55,6 +56,7 @@ namespace Figures_pr
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.LightBlue;
+            this.panel1.Controls.Add(this.button12);
             this.panel1.Controls.Add(this.button11);
             this.panel1.Controls.Add(this.button9);
             this.panel1.Controls.Add(this.button10);
@@ -78,7 +80,7 @@ namespace Figures_pr
             // button11
             // 
             this.button11.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button11.Location = new System.Drawing.Point(681, 62);
+            this.button11.Location = new System.Drawing.Point(604, 61);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(48, 32);
             this.button11.TabIndex = 22;
@@ -139,7 +141,7 @@ namespace Figures_pr
             // button8
             // 
             this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button8.Location = new System.Drawing.Point(627, 62);
+            this.button8.Location = new System.Drawing.Point(550, 61);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(48, 32);
             this.button8.TabIndex = 15;
@@ -240,7 +242,7 @@ namespace Figures_pr
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(627, 29);
+            this.comboBox1.Location = new System.Drawing.Point(550, 28);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(92, 21);
@@ -250,6 +252,17 @@ namespace Figures_pr
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(705, 72);
+            this.button12.Margin = new System.Windows.Forms.Padding(2);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(85, 19);
+            this.button12.TabIndex = 23;
+            this.button12.Text = "SaveToXml";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // Form1
             // 
@@ -293,6 +306,7 @@ namespace Figures_pr
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button button12;
     }
 }
 

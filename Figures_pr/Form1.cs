@@ -280,5 +280,14 @@ namespace Figures_pr
         {
             caretaker.Redo();
         }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                caretaker.Backup();
+                figures.SaveToXml(new XMLVisitor(), saveFileDialog1.FileName);
+            }
+        }
     }
 }

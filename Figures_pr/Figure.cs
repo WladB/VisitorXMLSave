@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Figures_pr
 {
-     public class Figure
+     public  class Figure
     {
         public static Graphics g;
         public Point point;
@@ -20,6 +21,7 @@ namespace Figures_pr
         public Size size;
         public string type="default";
         public int DeltaApex;
+        public virtual string Accept(XMLVisitor visitor) { return ""; }
         public Figure(){ 
         
         }
@@ -42,14 +44,14 @@ namespace Figures_pr
         public void hide(){
             draw(bkcolor);
         }
-        public void show()
+        public virtual void show()
         {
             draw(color);
             area();
         }
     }
 
-    class Rectangle_ : Figure
+    public class Rectangle_ : Figure
     {
         public Rectangle_()
         {
@@ -59,6 +61,11 @@ namespace Figures_pr
         {
             type = "rect";
         }
+        public override string Accept(XMLVisitor visitor)
+        {
+            return visitor.VisitRectangle(this);
+        }
+
         public override double area(){
             return size.Width*size.Height;
         }
@@ -76,7 +83,7 @@ namespace Figures_pr
             return new Triangle(this);
         }
     }
-    class Triangle : Figure
+    public class Triangle : Figure
     {
         public Triangle()
         {
@@ -92,6 +99,10 @@ namespace Figures_pr
         public Point A = new Point();
         public Point B = new Point();
         public Point C = new Point();
+        public override string Accept(XMLVisitor visitor)
+        {
+            return visitor.VisitTriangle(this);
+        }
         public override double area()
         {
               System.Windows.Vector AB = new System.Windows.Vector(point.X + size.Width - point.X, point.Y + size.Height - (point.Y + size.Height));
@@ -120,7 +131,7 @@ namespace Figures_pr
             g.DrawLine(new Pen(cl), point.X + DeltaApex, point.Y, point.X, point.Y + size.Height);
         }
     }
-    class Cube : Figure {
+    public class Cube : Figure {
 
         public Cube()
         {
@@ -129,6 +140,10 @@ namespace Figures_pr
         public Cube(Figure f):base(f)
         {
             type = "cube";
+        }
+        public override string Accept(XMLVisitor visitor)
+        {
+            return visitor.VisitCube(this);
         }
         public Cube(Cube f)
         {
@@ -175,9 +190,10 @@ namespace Figures_pr
           
         }
     }
-    class Cilindr : Figure
+    public class Cilindr : Figure
     {
         public float R;
+
         public Cilindr(){
             type = "cilindr";
         }
@@ -200,7 +216,10 @@ namespace Figures_pr
             R = size.Width / 2;
             return 2*(Math.PI*R*size.Height)+ 2* (Math.PI*(R*R));
         }
-
+        public override string Accept(XMLVisitor visitor)
+        {
+            return visitor.VisitCilindr(this);
+        }
         protected override void draw(Color cl)
         {
             float dx = size.Width / 17;
@@ -218,8 +237,8 @@ namespace Figures_pr
 
         }
     }
-      
-    class Circle : Figure
+
+    public class Circle : Figure
     {
         public Circle()
         {
@@ -235,6 +254,10 @@ namespace Figures_pr
             this.point = new Point(f.point.X, f.point.Y);
             this.size = new Size(f.size.Width, f.size.Height);
         }
+        public override string Accept(XMLVisitor visitor)
+        {
+            return visitor.VisitCircle(this);
+        }
         public override Figure Clone()
         {
             return new Circle(this);
@@ -248,7 +271,7 @@ namespace Figures_pr
             g.DrawEllipse(new Pen(cl), point.X, point.Y, size.Width, size.Width);
         }
     }
-    class Ellipse : Figure
+   public class Ellipse : Figure
     {
         public Ellipse()
         {
@@ -268,6 +291,10 @@ namespace Figures_pr
         {
             type = "el";
         }
+        public override string Accept(XMLVisitor visitor)
+        {
+            return visitor.VisitEllipse(this);
+        }
         public override double area()
         {
            return Math.PI * (size.Width / 2) * (size.Height / 2);
@@ -281,14 +308,30 @@ namespace Figures_pr
         public class Figures : Figure
     {
         List<Figure> figures = new List<Figure>();
-        public void show()
+        public override void show()
         {
             foreach (Figure f in figures)
             {
                 f.show();
             }
         }
-
+        public void SaveToXml(XMLVisitor visitor, string selectedPath)
+        {
+            string s = "";
+            foreach (Figure f in figures)
+            {
+                s += f.Accept(visitor) + " ";
+            }
+            using (XmlTextWriter writer = new XmlTextWriter(selectedPath, System.Text.Encoding.UTF8))
+            {
+                writer.Formatting = System.Xml.Formatting.Indented;
+                writer.WriteStartDocument();
+                writer.WriteStartElement("Root");
+                writer.WriteString(s);
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+            }
+        }
         public void add(Figure f) {
             figures.Add(f);
         }
